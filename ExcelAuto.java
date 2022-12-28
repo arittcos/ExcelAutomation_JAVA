@@ -53,10 +53,6 @@ public class ExcelAuto {
         data1.put("3", new Object[] {2, "Lokesh", "Gupta"});
         data1.put("4", new Object[] {3, "John", "Adwards"});
         data1.put("5", new Object[] {4, "Brian", "Schultz"});
-        data1.put("6", new Object[] {5, "Amit", "Shukla"});
-        data1.put("7", new Object[] {6, "Lokesh", "Gupta"});
-        data1.put("8", new Object[] {7, "John", "Adwards"});
-        data1.put("9", new Object[] {8, "Brian", "Schultz"});
           
         //Iterate over data and write to sheet
         Set<String> keyset1 = data1.keySet();
@@ -80,18 +76,70 @@ public class ExcelAuto {
 		{
 			//to create object of scanner class
 			Scanner myObj = new Scanner(System.in);
+			Scanner myobj1 = new Scanner(System.in);
+			
+			//to read in which drive user wants to create the file
+			System.out.println("Enter in which Drive waant save (except c drive) : "); 
+		    String fileDrive = myobj1.nextLine();
 			
 			//to read the fileName from user
-		    System.out.println("Enter filename"); 
+		    System.out.println("Enter filename : "); 
 		    String fileName = myObj.nextLine();
 		    
 		    //creating new excel file with user defined name
-			String filename = "E:\\javaExcel\\"+fileName+".xlsx";
+			String filename = fileDrive+":"+"\\"+fileName+".xlsx";
 			FileOutputStream fileOut = new FileOutputStream(filename);
 			
 			wb.write(fileOut);
 			
 			fileOut.close();
+			
+			//comparing two sheets
+			if(keyset.size() == keyset1.size())
+			{
+				int noMatch=0;
+				
+				for(int i=1;i<keyset.size();i++)
+				{
+					XSSFRow sheet1_row = sheet1.getRow(i);
+					XSSFRow sheet2_row = sheet2.getRow(i);
+					
+					XSSFCell sheet1_cell = sheet1_row.getCell(1);
+					XSSFCell sheet2_cell = sheet2_row.getCell(1);
+					
+					String sheet1_cell_data = sheet1_cell.toString();
+					String sheet2_cell_data = sheet2_cell.toString();
+					
+					if(sheet1_cell_data == sheet2_cell_data)
+					{
+						noMatch=0;
+//						System.out.println(sheet1_cell);
+//						System.out.println(sheet2_cell);
+//						System.out.println(noMatch);
+					}
+					else
+					{
+						noMatch=1;
+						break;
+//						System.out.println(sheet1_cell);
+//						System.out.println(sheet2_cell);
+//						System.out.println(noMatch);
+					}
+				}
+				
+				if(noMatch==0)
+				{
+					System.out.println("Hurry All Values Are Similar!!");
+				}
+				else
+				{
+					System.out.println("Sorry All Values Are Not Similar!!");
+				}
+			}
+			else
+			{
+				System.out.println("Two Sheets Have Different Heights!!");
+			}
 			
 			
 		}
